@@ -1,0 +1,117 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<title>Vis & Society Assignment 2</title>
+	<link rel="stylesheet" href="https://vis-society.github.io/assignments/report.css" />
+</head>
+
+<body>
+	<header>
+		<h1>
+			<small>Assignment 2</small>
+			Exploratory Data Analysis
+		</h1>
+
+		<p>
+			<strong>Gozel Dovranova</strong> — <em>gozel@mit.edu</em>
+		</p>
+	</header>
+	<main>
+		<section>
+			<h2>Subtheme: Transit Oriented Development (TOD)</h2>
+
+			<h3>Overall Analysis Questions</h3>
+			<ol>
+				<li>Where municipalities fall outside the MBTA Communities Act along outer commuter rail lines, does this create gaps in housing density requirements near transit, and what does that mean for equitable TOD in Metro Boston?</li>
+				<li>How does single-family zoning near MBTA Commuter Rail stations limit housing growth, and who does this affect most in Metro Boston?</li>
+				<li>What are the factors that shaped single-family zoning and MBTA Communities Act distribution?</li>
+			</ol>
+		</section>
+
+		<section>
+			<h2>Discoveries & Insights</h2>
+			<h3>Motivation</h3>
+			I have personally experienced the challenge of unaffordable housing in Boston, and it is one reason I believe transit-oriented development (TOD) could be one of the most effective solutions. When I was looking for affordable housing, I also needed reliable access to downtown Boston for work. In reality, my viable options were limited to a small geographic radius – areas close enough to make the commute manageable. Unfortunately, those neighborhoods were also among the most expensive. Beyond that radius, housing options became limited and the commute time increased significantly, making them impractical.
+			By contrast, when I was living in London, that effective “commuting radius” felt much larger. Although London is a bigger city than Boston, the extensive and efficient public transportation network meant that more neighborhoods were realistically accessible. As a result, I had far more housing options within a reasonable commute. Transit made distance less of a constraint.
+			As Boston continues to grow, London offers a useful model for how TOD can expand access and opportunity. Developments such as King’s Cross are frequently cited as successful examples of transit-oriented development, where dense housing, jobs, and amenities are integrated with major transit hubs. By investing in similar strategies, Boston could effectively “shrink” commuting distances and open up more affordable housing options across a wider area.
+			<h3>Datasets</h3>
+			Two separate datasets were used to create these plots. The first dataset is a GeoJSON file generated from the MBTA’s GTFS feed. It contains transit route data represented as polygon geometries, with a 40-meter buffer applied around each route to approximate service areas. I focused specifically on the Commuter Rail system, as it is one of the primary ways people travel to Boston for daily work. Because my subtheme is transit-oriented development (TOD), I also wanted to analyze the distribution of single-family housing in the Greater Boston area. The second dataset was created using data from the Metropolitan Area Planning Council (MAPC) Zoning Atlas and the United States Census Bureau. It includes municipal-level information on whether areas are zoned for single-family housing, as well as demographic data such as age distribution and median household income.
+			<h3> Dataset quality assessment and understanding</h3>
+			First, I wanted to understand the structure of the MBTA data and assess its quality to ensure it matched the expected geographic layout. To do this, I began by plotting the T lines, since I am familiar with their shapes and routes. I also wanted to combine this with station data from mbta_stops_collapsed.geojson. To make the datasets compatible, I wrote Python code to clean and restructure the station dataset so that it matched the format of mbta_lines_collapsed.geojson. Specifically, I extracted the “route_id” and added it as a new column to align the two datasets. I then used the “Blend Relationship” feature in Tableau to layer the station and line data. The successful alignment of stations and routes confirmed that the dataset was reliable, and I generated the T line map shown below.
+			<figure>
+				<img src="T_line_map.png" alt="" />
+				<figcaption>
+					This map displays the full Boston MBTA rapid transit network, color-coded by route (Blue, Orange, Red, and Green Line branches B–E), with dots marking each station stop. 
+				</figcaption>
+			</figure>
+			After that, I filtered the data for “Commuter Rail” and created a separate map of the Massachusetts Bay Transportation Authority Commuter Rail system, shown below.
+			<figure>
+				<img src="commuter_map.png" alt="" />
+				<figcaption>
+					This map displays the MBTA Commuter Rail system, with each of the 12 lines color-coded and labeled by name. The routes goes outward from downtown Boston, extending into the broader Greater Boston region and beyond.
+				</figcaption>
+			</figure>
+			Because Housing_sf_other_w_census.geojson would not load into Tableau, I was unable to do a detailed analysis there. I attempted to use QGIS as an alternative, but found the it confusing. Finally, I switched to Python and generated a housing map for the Greater Boston area, shown below.
+			<figure>
+				<img src="map_is_housing.png" alt="" />
+				<figcaption>
+					This map shows all 153 housing zones across the Greater Boston area, with blue shading indicating designated housing areas within each municipality. The white gaps within zones reflect non-residential land uses.
+				</figcaption>
+			</figure>
+			Next, I filtered the dataset to identify municipalities zoned entirely (100%) for single-family housing and created a separate map highlighting those areas, shown below.
+			<figure>
+				<img src="map_pct_single_family.png" alt="" />
+				<figcaption>
+					This map shows the percentage of single-family zoning across municipalities in Greater Boston, with darker red indicating a higher share and gray indicating little to none. Many municipalities across the region appear predominantly single-family zoned.
+				</figcaption>
+			</figure>
+			<h3>Analysis for Questions</h3>
+			The map illustrates the geographic reach of the MBTA Communities Act across Metro Boston's commuter rail network, highlighting a small but significant cluster of non-compliant municipalities (Bolton, Hudson, and Milford) that fall outside the law's coverage. The MBTA Communities Act requires municipalities served by the Massachusetts Bay Transportation Authority to designate at least one multifamily zoning district within 0.5 miles of a commuter rail station, with a minimum gross density of 15 units per acre. 
+			<figure>
+				<img src="map_mbta_community.png" alt="" />
+				<figcaption>
+					This map shows which municipalities in Greater Boston are designated MBTA communities (green) versus those that are not (pink), overlaid with the Commuter Rail network. Notably, Bolton, Hudson, and Milford are the only non-MBTA communities in the region, sitting just outside the reach of the commuter rail lines.
+				</figcaption>
+			</figure>
+			Considering that the majority of zones belong to MBTA Communities Act, we would expect more multifamily zoning in general. Let’s investigate this in the next plot.
+
+			<figure>
+				<img src="map_pct_single_family_with_rail.png" alt="" />
+				<figcaption>
+					This map overlays the share of single-family zoning across Metro Boston municipalities with the MBTA Commuter Rail network, highlighting towns with single-family zoning in labeled red markers. The pattern suggests that many municipalities along commuter rail lines remain heavily single-family zoned.
+				</figcaption>
+			</figure>
+			The map shows that single-family zoning covers much of the land along Metro Boston’s commuter rail lines. Towns such as Bolton, Hopkinton, Dover, Duxbury, and Wenham are zoned almost entirely (100%) for single-family homes. This pattern presents a significant barrier to TOD, which depends on denser, mixed-use housing located near transit stations in order to function effectively. In many communities in eastern Massachusetts, areas surrounding commuter rail stations are dominated by large-lot single-family neighborhoods. As a result, land that could otherwise support multifamily or mixed-use development remains unavailable. This issue is particularly visible along the outer commuter rail lines, where restrictive zoning limits housing supply and contributes to higher prices for residents who rely on commuter rail service to access jobs in Boston.
+			However, the continued prevalence of near-total single-family zoning in many commuter rail municipalities suggests that meaningful TOD-supportive reform has yet to be fully realized across the broader Metro Boston region.
+	To better understand the factors underlying these patterns, I compared age distributions between municipalities zoned entirely for single-family housing and those that are not. Using Python, I processed the Census data to calculate the percentage of residents in each age group for both categories. The resulting plot is shown below.
+
+			<figure>
+				<img src="chart_age_distribution.png" alt="" />
+				<figcaption>
+				Distribution of the age of the population in Single-Family Housing (red) vs Multi-Family Housing (blue) in Metro Boston.
+				</figcaption>
+			</figure>
+			Surprisingly, the age distributions were nearly identical across the two groups. I had expected municipalities dominated by single-family zoning to have an older population. However, it is important to note that the Census dataset aggregates everyone between ages 18 and 65 into a single category. This broad grouping likely hides meaningful differences, as it treats a college student and someone nearing retirement as part of the same cohort. The lack of more granular age data may therefore help explain why no clear age-based trend appears in the results.
+
+			
+		</section>
+
+		<section>
+			<h2>Summary</h2>
+
+			<p>In summary, this analysis examined the effectiveness of the MBTA Communities Act and the relationship between the Massachusetts Bay Transportation Authority Commuter Rail system and the distribution of single-family housing across the Metro Boston area. The results show that a substantial share of land near commuter rail lines remains zoned for single-family housing. This pattern suggests that significant structural barriers to transit-oriented development (TOD) present. Overall, the findings indicate that considerable policy and zoning reforms are still needed to enable more effective implementation of TOD throughout the Metro Boston region.				.</p>
+			<h3>Note and Future Work</h3>
+			I ended up spending a lot of time on familiriazing myself with Tableau and QGIS, just to find out I can't use them to analyze the main data for this subtheme, and it was already too late to switch to another subtheme. Hopefully, this practice will be useful for future assignments.
+		</section>
+		<section>
+			<h2>References</h2>
+			<ol>
+				<li>Massachusetts Bay Transportation Authority (MBTA). (2024). <a href="https://www.mbta.com/system-map">MBTA System Map</a>.</li>
+				<li>Metropolitan Area Planning Council (MAPC). (2024). <a href="https://www.mapc.org/zoning-atlas/">Zoning Atlas</a>.</li>
+				<li>United States Census Bureau. (2010). <a href="https://www.census.gov/data/datasets/time-series/demo/popest/2020s-counties-total.html">Population Estimates</a>.</li>
+				<li>Multifamily Zoning Reuirment for MBTA Communities Act. (2023). <a href="https://www.mass.gov/info-details/multi-family-zoning-requirement-for-mbta-communities">MBTA Communities Act</a>.</li>
+			</ol>
+		</section>
+	</main>
+</body>
+</html>
